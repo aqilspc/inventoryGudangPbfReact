@@ -1,0 +1,47 @@
+/* Maps */
+.map-responsive {
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    position: relative;
+    height: 0;
+}
+
+.map-responsive iframe {
+    border: 0;
+    margin-top: 10px;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.address,
+.telepon {
+    list-style-type: circle;
+}
+
+.footer {
+    background-color: #212529;
+    color: #ecf0f1;
+    text-align: center;
+    font-size: 14px;
+    padding: 15px;
+}
+
+.footer a {
+    color: #dc3545;
+}
+
+.footer a:hover {
+    color: #ecf0f1;
+}
+
+.fa {
+    padding: 5px;
+}
+
+.lead mb-4,
+p {
+    color: #ecf0f1;
+}

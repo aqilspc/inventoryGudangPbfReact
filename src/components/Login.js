@@ -1,9 +1,22 @@
-import React, { Component } from 'react'
-export default class Login extends Component {
-    render() {
-        return (
-            <form>
-                <h3>Sign In</h3>
+import React, { Component, useState, useContext } from 'react'
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from 'react-router-dom';
+const Login = () => {
+
+    let history = useHistory();
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setErrors] = useState("");
+    const dispatch = useDispatch();
+    const handleForm = (e) => {
+        e.preventDefault();
+        dispatch((username, password));
+        history.push('/')
+    }
+    return (
+        <form>
+            <h3>Sign In</h3>
+            <form onSubmit={e => handleForm(e)}>
                 <div className="mb-3">
                     <label>Username</label>
                     <input
@@ -41,6 +54,7 @@ export default class Login extends Component {
                     Forgot <a href="#">password?</a>
                 </p>
             </form>
-        )
-    }
+        </form>
+    )
+
 }
