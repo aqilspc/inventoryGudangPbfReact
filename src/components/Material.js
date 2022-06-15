@@ -6,6 +6,10 @@ import Form from 'react-bootstrap/Form';
 
 export default function Material() {
   const [material, setMaterial] = useState([]);
+  const [detail, setDetail] = useState({});
+  const [name, setName] = useState("");
+  const [jenismaterial, setJenisMaterial] = useState("");
+  const [jumlahmaterial, setJumlahMaterial] = useState("");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -33,12 +37,15 @@ export default function Material() {
     ambilDataMaterial();
   }, []
   )
-
+  const ambilDataDetail = (data) => () => {  
+    setShow(true);
+    setDetail (data)
+  }
   return (
     <div>
       <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+          <Navbar.Brand href="#home">INVENTORY</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
@@ -71,7 +78,7 @@ export default function Material() {
                 <td>{item.jenis_material}</td>
                 <td>{item.stock}</td>
                 <td>
-                  <Button variant="primary" onClick={handleShow}>EDIT</Button>
+                  <Button variant="primary" onClick={ambilDataDetail(item)}>EDIT</Button>
                   <Button variant="danger">DELETE</Button>
                 </td>
               </tr>
