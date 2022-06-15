@@ -45,8 +45,8 @@ export default function Profile() {
             </Navbar>
             <Container className="my-5">
                 <ListGroup>
-                    <ListGroup.Item>Nama :{user.name}</ListGroup.Item>
-                    <ListGroup.Item>Username : {user.username}</ListGroup.Item>
+                    <ListGroup.Item>Nama :{user?.name}</ListGroup.Item>
+                    <ListGroup.Item>Username : {user?.username}</ListGroup.Item>
                 </ListGroup>
             </Container>
         </div>
