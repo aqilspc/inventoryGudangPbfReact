@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Carousel, Container, Row, Col, Card, Button, Navbar, Nav, NavDropdown, Image, Table } from 'react-bootstrap';
 import { Link } from "react-router-dom"
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 
 export default function Material() {
   const [material, setMaterial] = useState([]);
-
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const ambilDataMaterial = () => {
     setMaterial([])
     // const token = JSON.parse(localStorage.getItem("token"))
@@ -60,18 +64,52 @@ export default function Material() {
           </thead>
           <tbody>
             {material.map((item, index) => {
-             return <tr key={index}>
+              return <tr key={index}>
                 <td>{index}</td>
 
                 <td>{item.name}</td>
                 <td>{item.jenis_material}</td>
                 <td>{item.stock}</td>
-                <td></td>
+                <td>
+                  <Button variant="primary" onClick={handleShow}>EDIT</Button>
+                  <Button variant="danger">DELETE</Button>
+                </td>
               </tr>
             })}
 
           </tbody>
         </Table>
+      </Container>
+      <Container>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>EDIT MATERIAL</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>Name</Form.Label>
+                <Form.Control type="text" />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>Jenis Material</Form.Label>
+                <Form.Control type="nummber" />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>Jumlah Material</Form.Label>
+                <Form.Control type="number" />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Container>
     </div>
   )
