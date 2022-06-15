@@ -11,8 +11,11 @@ export default function Material() {
   const [jenismaterial, setJenisMaterial] = useState("");
   const [jumlahmaterial, setJumlahMaterial] = useState("");
   const [show, setShow] = useState(false);
+  const [showcreate, setShowCreate] = useState(false);
   const handleClose = () => setShow(false);
+  const handleCloseCreate = () => setShowCreate(false);
   const handleShow = () => setShow(true);
+  const handleShowCreate = () => setShowCreate(true);
   const ambilDataMaterial = () => {
     setMaterial([])
     // const token = JSON.parse(localStorage.getItem("token"))
@@ -37,9 +40,9 @@ export default function Material() {
     ambilDataMaterial();
   }, []
   )
-  const ambilDataDetail = (data) => () => {  
+  const ambilDataDetail = (data) => () => {
     setShow(true);
-    setDetail (data)
+    setDetail(data)
   }
   return (
     <div>
@@ -60,6 +63,8 @@ export default function Material() {
         </Container>
       </Navbar>
       <Container>
+      <Button variant="secondary" size="lg" onClick = {handleShowCreate} >CREATE
+      </Button>
         <Table striped>
           <thead>
             <tr>
@@ -86,6 +91,37 @@ export default function Material() {
 
           </tbody>
         </Table>
+      </Container>
+      <Container>
+        <Modal show={showcreate} onHide={handleCloseCreate}>
+          <Modal.Header closeButton>
+            <Modal.Title>ADD MATERIAL</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>Name</Form.Label>
+                <Form.Control type="text" />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>Jenis Material</Form.Label>
+                <Form.Control type="nummber" />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>Jumlah Material</Form.Label>
+                <Form.Control type="number" />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseCreate}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleCloseCreate}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Container>
       <Container>
         <Modal show={show} onHide={handleClose}>

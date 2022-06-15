@@ -53,6 +53,9 @@ export default function Transaksi() {
                 </Container>
             </Navbar>
             <Container>
+                <Button variant="secondary" size="lg">
+                    CREATE
+                </Button>
                 <Table striped>
                     <thead>
                         <tr>
