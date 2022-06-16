@@ -7,9 +7,11 @@ import Form from 'react-bootstrap/Form';
 export default function Material() {
   const [material, setMaterial] = useState([]);
   const [detail, setDetail] = useState({});
+
   const [name, setName] = useState("");
   const [jenismaterial, setJenisMaterial] = useState("");
   const [jumlahmaterial, setJumlahMaterial] = useState("");
+
   const [show, setShow] = useState(false);
   const [showcreate, setShowCreate] = useState(false);
   const handleClose = () => setShow(false);
@@ -18,18 +20,10 @@ export default function Material() {
   const handleShowCreate = () => setShowCreate(true);
   const ambilDataMaterial = () => {
     setMaterial([])
-    // const token = JSON.parse(localStorage.getItem("token"))
-    fetch("http://127.0.0.1:8000/api/material_all"
-
-
-    )
+    fetch("http://127.0.0.1:8000/api/material_all")
       .then((res) => res.json())
       .then((json) => {
-
-        //   dispatch(showAll());
-        // json.data.forEach((item) => {
         setMaterial(json.data)
-        // })
         console.log(material)
       })
       .catch((err) => {
@@ -41,11 +35,78 @@ export default function Material() {
   }, []
   )
   const ambilDataDetail = (data) => () => {
+    setName(data.name);
+    setJenisMaterial(data.jenis_material);
+    setJumlahMaterial(data.stock);
+    setDetail(data);
     setShow(true);
-    setDetail(data)
   }
+
+  const deleteMaterial = (id) => () => {
+    fetch("http://127.0.0.1:8000/api/material_delete"+"/"+id,{
+       method: 'delete',
+       headers: {'Content-Type':'application/json'},
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if(json.status === "success"){
+            alert('berhasil delete material');
+            window.location.reload(); 
+        }else{
+            alert('gagal delete material');
+            window.location.reload(); 
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });  
+  }
+
+  const updateMaterial =() => {
+         fetch('http://127.0.0.1:8000/api/material_update', {
+           method: 'put',
+           headers: {'Content-Type':'application/json'},
+           body: JSON.stringify({ 
+                id: detail.id,
+                name: name,
+                jenis_material: jenismaterial,
+                stock: jumlahmaterial
+            })
+            }).then((res) => res.json())
+            .then((json) => {
+                if(json.status === "success"){
+                   alert('berhasil update material');
+                  window.location.reload(); 
+                }else{
+                    alert('gagal update material');
+                   window.location.reload(); 
+                }
+            });
+      }
+
+    const storeMaterial =() => {
+         fetch('http://127.0.0.1:8000/api/material_insert', {
+           method: 'post',
+           headers: {'Content-Type':'application/json'},
+           body: JSON.stringify({ 
+                name: name,
+                jenis_material: jenismaterial,
+                stock: jumlahmaterial
+            })
+            }).then((res) => res.json())
+            .then((json) => {
+                if(json.status === "success"){
+                   alert('berhasil insert material');
+                  window.location.reload(); 
+                }else{
+                    alert('gagal insert material');
+                   window.location.reload(); 
+                }
+            });
+      }
   return (
     <div>
+
       <Navbar bg="light" expand="lg">
         <Container>
           <Navbar.Brand href="#home">INVENTORY</Navbar.Brand>
@@ -62,6 +123,7 @@ export default function Material() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
       <Container>
       <Button variant="secondary" size="lg" onClick = {handleShowCreate} >CREATE
       </Button>
@@ -78,13 +140,12 @@ export default function Material() {
             {material.map((item, index) => {
               return <tr key={index}>
                 <td>{index}</td>
-
                 <td>{item.name}</td>
                 <td>{item.jenis_material}</td>
                 <td>{item.stock}</td>
                 <td>
                   <Button variant="primary" onClick={ambilDataDetail(item)}>EDIT</Button>
-                  <Button variant="danger">DELETE</Button>
+                  <Button variant="danger" onClick={deleteMaterial(item.id)}>DELETE</Button>
                 </td>
               </tr>
             })}
@@ -92,6 +153,7 @@ export default function Material() {
           </tbody>
         </Table>
       </Container>
+
       <Container>
         <Modal show={showcreate} onHide={handleCloseCreate}>
           <Modal.Header closeButton>
@@ -101,15 +163,15 @@ export default function Material() {
             <Form>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" />
+                <Form.Control type="text" onChange={(e) => setName(e.target.value)}/>
               </Form.Group>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Jenis Material</Form.Label>
-                <Form.Control type="nummber" />
+                <Form.Control type="text" onChange={(e) => setJenisMaterial(e.target.value)}/>
               </Form.Group>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Jumlah Material</Form.Label>
-                <Form.Control type="number" />
+                <Form.Control type="number" onChange={(e) => setJumlahMaterial(e.target.value)}/>
               </Form.Group>
             </Form>
           </Modal.Body>
@@ -117,12 +179,13 @@ export default function Material() {
             <Button variant="secondary" onClick={handleCloseCreate}>
               Close
             </Button>
-            <Button variant="primary" onClick={handleCloseCreate}>
+            <Button variant="primary" onClick={storeMaterial}>
               Save Changes
             </Button>
           </Modal.Footer>
         </Modal>
       </Container>
+
       <Container>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
@@ -132,15 +195,15 @@ export default function Material() {
             <Form>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" />
+                <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)}/>
               </Form.Group>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Jenis Material</Form.Label>
-                <Form.Control type="nummber" />
+                <Form.Control type="text" value={jenismaterial} onChange={(e) => setJenisMaterial(e.target.value)}/>
               </Form.Group>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Jumlah Material</Form.Label>
-                <Form.Control type="number" />
+                <Form.Control type="number" value={jumlahmaterial} onChange={(e) => setJumlahMaterial(e.target.value)}/>
               </Form.Group>
             </Form>
           </Modal.Body>
@@ -148,12 +211,13 @@ export default function Material() {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={handleClose}>
+            <Button variant="primary" onClick={updateMaterial}>
               Save Changes
             </Button>
           </Modal.Footer>
         </Modal>
       </Container>
+
     </div>
   )
 }

@@ -62,6 +62,7 @@ export default function Transaksi() {
                             <th>#</th>
                             <th>Name Material</th>
                             <th>Name Warehouse</th>
+                            <th>Quantity</th>
                             <th>Username</th>
                             <th>Date</th>
                             <th>Aksi</th>
@@ -74,6 +75,7 @@ export default function Transaksi() {
 
                                 <td>{item.material_name}</td>
                                 <td>{item.warehouse_name}</td>
+                                <td>{item.qty}</td>
                                 <td>{item.user_name}</td>
                                 <td>{item.date_transaction}</td>
                                 <td>
