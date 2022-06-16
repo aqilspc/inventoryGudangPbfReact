@@ -10,7 +10,7 @@ export default function Transaksi() {
     const [showcreate, setShowCreate] = useState(false);
 
     const [material_id, setMaterialId] = useState("");
-    const [user_id, setUerId] = useState("");
+    const [user_id, setUserId] = useState("");
     const [warehouse_id, setWarehouseId] = useState("");
     const [qty, setQty] = useState("");
     const [type, setType] = useState("");
@@ -28,6 +28,24 @@ export default function Transaksi() {
             .then((res) => res.json())
             .then((json) => {
                 setMaterialIdOption(json.data)
+            })
+            .catch((err) => {
+                console.log(err);
+        });
+        setUerIdOption([])
+        fetch("http://127.0.0.1:8000/api/user_option")
+            .then((res) => res.json())
+            .then((json) => {
+                setUerIdOption(json.data)
+            })
+            .catch((err) => {
+                console.log(err);
+        });
+       setWarehouseIdOption([])
+        fetch("http://127.0.0.1:8000/api/gudang_option")
+            .then((res) => res.json())
+            .then((json) => {
+                setWarehouseIdOption(json.data)
             })
             .catch((err) => {
                 console.log(err);
@@ -54,6 +72,30 @@ export default function Transaksi() {
         localStorage.removeItem('token');
         window.location.reload(); 
     }
+
+    const storeTransaksi =() => {
+         //console.log(material_id);
+         fetch('http://127.0.0.1:8000/api/transaction_insert', {
+           method: 'post',
+           headers: {'Content-Type':'application/json'},
+           body: JSON.stringify({ 
+                material_id: material_id,
+                user_id: user_id,
+                warehouse_id: warehouse_id,
+                qty: qty,
+                type:type
+            })
+            }).then((res) => res.json())
+            .then((json) => {
+                if(json.status === "success"){
+                   alert('berhasil insert transaksi');
+                  //window.location.reload(); 
+                }else{
+                    alert(json.message);
+                   //window.location.reload(); 
+                }
+            });
+      }
     return (
         <div>
             <Navbar bg="light" expand="lg">
@@ -98,6 +140,7 @@ export default function Transaksi() {
                                 <td>{item.warehouse_name}</td>
                                 <td>{item.qty}</td>
                                 <td>{item.user_name}</td>
+                                <td>{item.type}</td>
                                 <td>{item.date_transaction}</td>
                                 
                             </tr>
@@ -116,11 +159,17 @@ export default function Transaksi() {
             <Form>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Pilih Gudang</Form.Label>
-                
+                 <select class="form-control" onChange={(e) => setWarehouseId(e.target.value)} >
+                 <option value="0">Pilih</option>
+                     {warehouse_id_option.map((item, i) => {
+                        return <option key={i} value={item.value}>{item.text}</option>
+                      })}
+                 </select>
               </Form.Group>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Pilih Barang</Form.Label>
                 <select class="form-control" onChange={(e) => setMaterialId(e.target.value)} >
+                    <option value="0">Pilih</option>
                      {material_id_option.map((item, i) => {
                         return <option key={i} value={item.value}>{item.text}</option>
                       })}
@@ -128,7 +177,12 @@ export default function Transaksi() {
               </Form.Group>
                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Pilih Penanggung Jawab</Form.Label>
-               
+                <select class="form-control" onChange={(e) => setUserId(e.target.value)} >
+                <option value="0">Pilih</option>
+                     {user_id_option.map((item, i) => {
+                        return <option key={i} value={item.value}>{item.text}</option>
+                      })}
+                 </select>
               </Form.Group>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Pilih Type</Form.Label>
@@ -148,7 +202,7 @@ export default function Transaksi() {
             <Button variant="secondary" onClick={handleCloseCreate}>
               Close
             </Button>
-            <Button variant="primary" >
+            <Button variant="primary" onClick={storeTransaksi}>
               Save Changes
             </Button>
           </Modal.Footer>
