@@ -4,7 +4,10 @@ import Gudang from "../assets/img/gudang.jpg"
 import { Link } from "react-router-dom"
 
 import '../App.css'
-
+const keluar =() => {
+    localStorage.removeItem('token');
+     window.location.reload(); 
+}
 const Home = () => {
 
     return (
@@ -20,7 +23,7 @@ const Home = () => {
                             <Nav.Link as={Link}to="/material">Material</Nav.Link>
                             <Nav.Link as={Link}to="/transaksi">Transaksi</Nav.Link>
                             <Nav.Link as={Link}to="/warehouse">Warehouse</Nav.Link>
-                            <Nav.Link href="#link">Log Out</Nav.Link>
+                            <Nav.Link href="#"><a onClick={keluar}>Log Out</a></Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

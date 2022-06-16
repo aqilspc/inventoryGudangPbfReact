@@ -23,10 +23,13 @@ export default function Login() {
         )
         .then((res) => res.json())
         .then((json) => {
-          //   dispatch(showAll());
-          localStorage.setItem("token", JSON.stringify(json.data[0].id))
-          navigate("/");
-
+          if(json.status === "success"){
+                alert('Berhasil login');
+                localStorage.setItem("token", JSON.stringify(json.data[0].id))
+                navigate("/");
+          }else{
+                alert('Gagal login '+json.message)
+          }
         })
         .catch((err) => {
           console.log(err);

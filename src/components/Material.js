@@ -34,6 +34,7 @@ export default function Material() {
     ambilDataMaterial();
   }, []
   )
+
   const ambilDataDetail = (data) => () => {
     setName(data.name);
     setJenisMaterial(data.jenis_material);
@@ -69,8 +70,8 @@ export default function Material() {
            body: JSON.stringify({ 
                 id: detail.id,
                 name: name,
-                jenis_material: jenismaterial,
-                stock: jumlahmaterial
+                jenis_material: jenismaterial
+               // stock: jumlahmaterial
             })
             }).then((res) => res.json())
             .then((json) => {
@@ -104,6 +105,10 @@ export default function Material() {
                 }
             });
       }
+      const keluar =() => {
+        localStorage.removeItem('token');
+        window.location.reload(); 
+    }
   return (
     <div>
 
@@ -118,7 +123,7 @@ export default function Material() {
               <Nav.Link as={Link} to="/material">Material</Nav.Link>
               <Nav.Link as={Link} to="/transaksi">Transaksi</Nav.Link>
               <Nav.Link as={Link} to="/warehouse">Warehouse</Nav.Link>
-              <Nav.Link href="#link">Log Out</Nav.Link>
+              <Nav.Link href="#link"><a onClick={keluar}>Log Out</a></Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -139,12 +144,13 @@ export default function Material() {
           <tbody>
             {material.map((item, index) => {
               return <tr key={index}>
-                <td>{index}</td>
+                <td>{index+1}</td>
                 <td>{item.name}</td>
                 <td>{item.jenis_material}</td>
                 <td>{item.stock}</td>
                 <td>
                   <Button variant="primary" onClick={ambilDataDetail(item)}>EDIT</Button>
+                  &nbsp;&nbsp;
                   <Button variant="danger" onClick={deleteMaterial(item.id)}>DELETE</Button>
                 </td>
               </tr>
@@ -169,10 +175,7 @@ export default function Material() {
                 <Form.Label>Jenis Material</Form.Label>
                 <Form.Control type="text" onChange={(e) => setJenisMaterial(e.target.value)}/>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                <Form.Label>Jumlah Material</Form.Label>
-                <Form.Control type="number" onChange={(e) => setJumlahMaterial(e.target.value)}/>
-              </Form.Group>
+             
             </Form>
           </Modal.Body>
           <Modal.Footer>
@@ -201,10 +204,7 @@ export default function Material() {
                 <Form.Label>Jenis Material</Form.Label>
                 <Form.Control type="text" value={jenismaterial} onChange={(e) => setJenisMaterial(e.target.value)}/>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                <Form.Label>Jumlah Material</Form.Label>
-                <Form.Control type="number" value={jumlahmaterial} onChange={(e) => setJumlahMaterial(e.target.value)}/>
-              </Form.Group>
+         
             </Form>
           </Modal.Body>
           <Modal.Footer>
