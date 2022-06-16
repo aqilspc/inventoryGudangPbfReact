@@ -89,10 +89,10 @@ export default function Transaksi() {
             .then((json) => {
                 if(json.status === "success"){
                    alert('berhasil insert transaksi');
-                  //window.location.reload(); 
+                  window.location.reload(); 
                 }else{
                     alert(json.message);
-                   //window.location.reload(); 
+                   window.location.reload(); 
                 }
             });
       }
@@ -189,7 +189,7 @@ export default function Transaksi() {
                 <select class="form-control" onChange={(e) => setType(e.target.value)}>
                     <option value="0">Pilih</option>
                     <option value="material_in">Material In</option>
-                    <option value="material_in">Material Out</option>
+                    <option value="material_out">Material Out</option>
                 </select>
               </Form.Group>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
